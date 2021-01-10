@@ -1,0 +1,9 @@
+spring.cloud.stream:
+  kafka.binder.brokers: "${KAFKA_URI:localhost}"
+  bindings:
+    process-in-0:
+      destination: persons
+      group: processor
+    process-out-0:
+      destination: customers
+      group: processor
