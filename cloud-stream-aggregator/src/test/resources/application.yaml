@@ -1,0 +1,25 @@
+spring.cloud.stream:
+  bindings:
+    consume-in-0:
+      destination: persons
+      group: aggregator
+  kafka:
+    binder.brokers: ${spring.embedded.kafka.brokers}
+    streams:
+      binder:
+        configuration:
+          spring.json.trusted.packages: net.tyt.*
+          default:
+            key:
+              serde: org.apache.kafka.common.serialization.Serdes$UUIDSerde
+            value:
+              serde: org.springframework.kafka.support.serializer.JsonSerde
+#    bindings.consume-in-0:
+#      binder: kafka1
+#      destination: test
+#    bindings.consume-out-0:
+#      binder: kafka2
+#      destination: test
+#    binders.kafka1.type: kstream
+#    binders.kafka2.type: kstream
+
