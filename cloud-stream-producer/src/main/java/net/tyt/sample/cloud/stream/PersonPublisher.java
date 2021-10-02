@@ -5,7 +5,7 @@ import org.reactivestreams.Subscriber;
 import org.springframework.stereotype.Component;
 
 @Component
-class PersonPublisher implements Publisher<Person> {
+public class PersonPublisher implements Publisher<Person> {
     private Subscriber<? super Person> subscriber;
 
     @Override

@@ -1,5 +1,6 @@
 package net.tyt.sample.cloud.stream;
 
+import com.jcabi.aspects.Loggable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,15 +20,17 @@ public class CloudStreamProcessorApplication {
 
     @Bean
     public static Function<Flux<Person>,Flux<Customer>> process() {
-        return (persons) -> persons.map(person -> {
-            log.info("process({})...",person);
-            return Customer.builder()
+        return persons -> persons.map(CloudStreamProcessorApplication::createCustomer);
+
+    }
+    
+    @Loggable(prepend=true)
+    private static Customer createCustomer(Person person) {
+        return Customer.builder()
                     .id(UUID.randomUUID())
                     .personId(person.getId())
                     .accountId(UUID.randomUUID())
                     .build();
-            });
-
     }
 
 }
