@@ -1,5 +1,7 @@
 package net.tyt.sample.cloud.stream;
 
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import reactor.core.publisher.Mono;
 @EmbeddedKafka
 @Import(TestChannelBinderConfiguration.class)
 @DirtiesContext
+@Slf4j
 class PersonRoadTests {
 
     @Autowired
@@ -33,7 +36,7 @@ class PersonRoadTests {
 
     @Autowired
     private WebTestClient client;
-
+    
     @Test
     void test01_Create() {
         Person person = Person.builder()
@@ -50,13 +53,13 @@ class PersonRoadTests {
                 .expectBody(Person.class)
                 .value(p -> {
                             Assertions.assertNotNull(p.getId());
-                            Assertions.assertEquals(p.getFirstName(), "Igor");
-                            Assertions.assertEquals(p.getLastName(), "Tytar");
+                            Assertions.assertEquals("Igor", p.getFirstName());
+                            Assertions.assertEquals("Tytar", p.getLastName());
                         }
                 );
         String result = new String(output.receive().getPayload());
         Assertions.assertTrue(result.matches(".*Tytar.*"));
         Assertions.assertTrue(result.matches(".*Igor.*"));
-        System.out.println("############ "+result);
+        log.debug("############ {}",result);
     }
 }
